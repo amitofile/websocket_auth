@@ -1,5 +1,6 @@
 const httpProxy = require('http-proxy');
 const https = require('https');
+const fs = require('fs');
 
 const options = {
     key: fs.readFileSync('./include/ssl/key.cer'),
@@ -7,14 +8,9 @@ const options = {
 };
 
 var proxy = new httpProxy.createProxyServer({
-    target: {
-        host: 'localhost',
-        port: 9015
-    },
-    ssl: {
-        key: fs.readFileSync('./include/ssl/key.cer', 'utf8'),
-        cert: fs.readFileSync('./include/ssl/certificate.cer', 'utf8')
-    }
+    target: 'ws://127.0.0.1:3000',
+    secure: false,
+    ssl: options
 });
 var proxyServer = https.createServer(options, function (req, res) {
     proxy.web(req, res);
