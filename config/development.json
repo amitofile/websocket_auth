@@ -2,13 +2,14 @@
     "default": {
         "expiry": 60,
         "secret": "reha546dky1z21vcdv564p54bzd6e894liu92g17g89k321bx4asf9871bdzdsV6o8o651sht651a984",
-        "port": 8099,
-        "DEBUG": false
+        "http_port": 9099,
+        "https_port": 8099,
+        "DEBUG": true
     },
     "redis_config": {
         "port": 6379,
-        "host": "35.209.176.181",
-        "password": "RBOJ9cCNoGCKhlEBwQLHatWgn4Xn4HwNUbtzoVxAYxkiYBi7aufl4jtj65t45dk1651hdrz98h4jxth6",
-        "db": 0
+        "host": "127.0.0.1",
+        "password": "",
+        "db": 15
     }
 }

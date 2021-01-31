@@ -1,18 +1,22 @@
 const app = require('express')();
 const httpProxy = require('http-proxy');
 const http = require('http');
+const https = require('https');
 const bodyParser = require('body-parser');
 const config = require('config');
-
+const fs = require('fs');
 
 const check = require('./include/middleware');
 const auth = require('./include/auth');
 const response = require('./include/response');
 
-
 const params = config.get('default');
 
-// Encode URL/Requests for entire application
+const options = {
+    key: fs.readFileSync('./include/ssl/key.pem'),
+    cert: fs.readFileSync('./include/ssl/cert.pem'),
+};
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
@@ -40,9 +44,14 @@ app.post(`/feeds/token`, check.credentials, check.authentication, function (req,
     }
 });
 
-var proxyServer = http.createServer(app).listen(params.port);
+var proxyHttpServer = http.createServer(app).listen(params.http_port, () => {
+    console.log("Express server listening on port " + proxyHttpServer.address.port);
+});
+var proxyHttpsServer = https.createServer(options, app).listen(params.https_port, () => {
+    console.log("Express server listening on port " + proxyHttpsServer.address.port);
+});
 
-proxyServer.on('upgrade', function (req, socket, head) {
+proxyHttpServer.on('upgrade', function (req, socket, head) {
     let token = check.accessToken(req);
     if (token !== null) {
         auth.checkToken(token, (decoded) => {
@@ -57,6 +66,17 @@ proxyServer.on('upgrade', function (req, socket, head) {
     }
 });
 
-proxy.on('open', function (proxySocket) {
-    console.log(proxySocket.id);
+proxyHttpsServer.on('upgrade', function (req, socket, head) {
+    let token = check.accessToken(req);
+    if (token !== null) {
+        auth.checkToken(token, (decoded) => {
+            if (decoded && typeof decoded.sub !== 'undefined') {
+                auth.verifyToken(decoded.sub, token, (status) => {
+                    if (status) {
+                        proxy.ws(req, socket, head);
+                    }
+                });
+            }
+        });
+    }
 });
