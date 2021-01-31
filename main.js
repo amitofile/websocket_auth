@@ -13,8 +13,8 @@ const response = require('./include/response');
 const params = config.get('default');
 
 const options = {
-    key: fs.readFileSync('./include/ssl/key.pem'),
-    cert: fs.readFileSync('./include/ssl/cert.pem'),
+    key: fs.readFileSync('./include/ssl/key.cer'),
+    cert: fs.readFileSync('./include/ssl/certificate.cer'),
 };
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -45,10 +45,10 @@ app.post(`/feeds/token`, check.credentials, check.authentication, function (req,
 });
 
 var proxyHttpServer = http.createServer(app).listen(params.http_port, () => {
-    console.log("Express server listening on port " + proxyHttpServer.address.port);
+    console.log("Express server listening on port " + params.http_port);
 });
 var proxyHttpsServer = https.createServer(options, app).listen(params.https_port, () => {
-    console.log("Express server listening on port " + proxyHttpsServer.address.port);
+    console.log("Express server listening on port " + params.https_port);
 });
 
 proxyHttpServer.on('upgrade', function (req, socket, head) {
