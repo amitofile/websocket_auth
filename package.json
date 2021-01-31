@@ -1,0 +1,33 @@
+{
+  "name": "websocket_auth",
+  "version": "1.0.0",
+  "main": "main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Amit P",
+  "license": "ISC",
+  "description": "Authenticating and monitoring websockets",
+  "dependencies": {
+    "config": "^3.3.3",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "http-proxy": "^1.18.1",
+    "install": "^0.13.0",
+    "ioredis": "^4.19.4",
+    "jsonwebtoken": "^8.5.1",
+    "node-cache": "^5.1.2",
+    "npm": "^6.14.11"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amitofile/websocket_auth.git"
+  },
+  "bugs": {
+    "url": "https://github.com/amitofile/websocket_auth/issues"
+  },
+  "homepage": "https://github.com/amitofile/websocket_auth#readme"
+}
