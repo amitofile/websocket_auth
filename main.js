@@ -24,7 +24,8 @@ var proxy = new httpProxy.createProxyServer({
     target: {
         host: 'localhost',
         port: 3000
-    }
+    },
+    ssl: options
 });
 
 app.all('/*', function (req, res, next) {
