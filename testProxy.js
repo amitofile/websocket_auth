@@ -1,3 +1,6 @@
+const httpProxy = require('http-proxy');
+const http = require('http');
+
 var proxy = new httpProxy.createProxyServer({
     target: {
         host: 'localhost',
