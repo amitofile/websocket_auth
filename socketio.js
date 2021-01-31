@@ -1,5 +1,3 @@
-const { captureRejectionSymbol } = require('events');
-
 const app = require('express')();
 const http = require('http').Server(app);
 const https = require('https').Server(app);
