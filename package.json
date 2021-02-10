@@ -9,6 +9,7 @@
   "license": "ISC",
   "description": "Authenticating and monitoring websockets",
   "dependencies": {
+    "async-foreach": "^0.1.3",
     "config": "^3.3.3",
     "cors": "^2.8.5",
     "express": "^4.17.1",
@@ -16,6 +17,7 @@
     "install": "^0.13.0",
     "ioredis": "^4.19.4",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
     "node-cache": "^5.1.2",
     "npm": "^6.14.11"
   },

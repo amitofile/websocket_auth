@@ -2,14 +2,22 @@
     "default": {
         "expiry": 60,
         "secret": "reha546dky1z21vcdv564p54bzd6e894liu92g17g89k321bx4asf9871bdzdsV6o8o651sht651a984",
-        "http_port": 9099,
-        "https_port": 8099,
+        "use_ssl": false,
+        "http_port": 80,
+        "https_port": 443,
+        "feed_path": "/feed",
+        "register_path": "/auth/admin/register",
+        "token_path": "/auth/client/token",
+        "verify_path": "/auth/client/verify",
+        "platform_prefix":"app",
+        "admin_key": "uyk65as6p5vasd687j2xc65k5f6aew5k65",
+        "admin_secret": "sdv4uy8fdh5ds6p61v65asd654ki651bsvd",
         "DEBUG": true
     },
     "redis_config": {
         "port": 6379,
-        "host": "127.0.0.1",
-        "password": "",
+        "host": "35.209.176.181",
+        "password": "Dgfy8RBOJ9cCNoGCKhlEBwQLHatWgn4Xn4HwNUbtzoV4jxth6",
         "db": 15
     }
 }

@@ -1,9 +1,7 @@
 const config = require('config');
 const url = require('url');
-
 const response = require('./response');
 const auth = require('./auth');
-
 const params = config.get('default');
 
 module.exports.credentials = (req, res, next) => {
@@ -15,25 +13,63 @@ module.exports.credentials = (req, res, next) => {
             req.body.authentication = credentials;
             next();
         } else {
-            console.error('Authentication credentials are invalid', credentials);
-            response.setError(req, res, "Authentication credentials are invalid");
+            let msg = 'Authentication credentials are invalid';
+            console.error(msg, credentials);
+            response.setError(req, res, msg);
         }
     } else {
-        console.error('Authentication header is missing');
-        response.setError(req, res, "Authentication header is missing");
+        let msg = 'Authentication header is missing';
+        console.error(msg);
+        response.setError(req, res, msg);
+    }
+}
+
+module.exports.authenticationAdmin = async (req, res, next) => {
+    let credentials = req.body.authentication;
+    if (credentials[0] == params.admin_key && credentials[1] == params.admin_secret) {
+        next();
+    } else {
+        let msg = 'Invalid admin credentials';
+        console.error(msg, credentials);
+        response.setError(req, res, msg);
     }
 }
 
 module.exports.authentication = async (req, res, next) => {
     let credentials = req.body.authentication;
-    auth.authenticate(credentials, (status) => {
-        if (status) {
+    auth.authenticate(credentials, (result) => {
+        if (result) {
+            req.body.userdata = result;
+            req.body.userplatforms = (Object.keys(result)).map(v => { return v.replace(`${params.platform_prefix}_`, ''); });
             next();
         } else {
-            console.error('Invalid credentials', credentials);
-            response.setError(req, res, "Invalid credentials");
+            let msg = 'Invalid credentials';
+            console.error(msg, credentials);
+            response.setError(req, res, msg);
         }
     });
+}
+
+module.exports.newuser = async (req, res, next) => {
+    if (req.body.newuser) {
+        let newuser = req.body.newuser;
+        if (typeof newuser.key !== 'undefined'
+            && typeof newuser.secret !== 'undefined'
+            && newuser.key != ""
+            && newuser.secret != ""
+            && newuser.key.length >= 16
+            && newuser.secret.length >= 16) {
+            next();
+        } else {
+            let msg = 'New user information invalid or missing';
+            console.error(msg);
+            response.setError(req, res, msg);
+        }
+    } else {
+        let msg = 'New user information missing';
+        console.error(msg);
+        response.setError(req, res, msg);
+    }
 }
 
 module.exports.accessToken = (req) => {
